@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+bool isLeap(int year) {
+    int res;
+    
+    if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+        res = 1;
+    }
+    else {
+        res = 0;
+    }
+    
+    return res;
+}
+
+int monthLength(int year, int month) {
+    //Way 1
+    int dayCount;
+    
+    if (month % 2 != 0 && month < 8 || month % 2 == 0 && month >= 8) {
+        dayCount = 31;
+    }
+    else if (month % 2 == 0 && month < 8 && month > 2 || month % 2 != 0 && month < 12) {
+        dayCount = 30;
+    }
+    else if (month == 2) {
+        if (isLeap(year) == 1) {
+            dayCount = 29;
+        }
+        else {
+            dayCount = 28;
+        }
+    }
+    else {
+        return 0;
+    }
+    
+    switch (month) {
+        case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: return dayCount;
+    }
+    
+    return -1;
+    
+    //Way 2
+    int stndMonths[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    
+    int *ptr = stndMonths;
+    
+    if (month == 2 && isLeap(year) == 1) {
+        return 29;
+    }
+    
+    return *(ptr + (month - 1));
+}
+
+int main() {
+    //Task 1
+    for (int yr = 1991; yr <= 2026; yr++) {
+        cout << yr << " -> " << isLeap(yr) << endl;
+    }
+    
+    //Task 2
+    for (int yr = 1991; yr <= 2026; yr++) {
+        cout << yr << ": ";
+        for (int mo = 1; mo <= 12; mo++) {
+            cout << monthLength(yr,mo) << " ";
+        }
+        cout << endl;
+    }
+}
